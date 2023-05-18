@@ -1,0 +1,5 @@
+export enum InconvenientRouteReasons {
+  BUS_STOP_FAR_FROM_A = 'BUS_STOP_FAR_FROM_A',
+  BUS_STOP_FAR_FROM_B = 'BUS_STOP_FAR_FROM_B',
+  TRANSFERS = 'TRANSFERS',
+}
