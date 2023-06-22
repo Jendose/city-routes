@@ -19,7 +19,7 @@ export interface ICheckInconvenientRouteReasonProps {
 export const CheckInconvenientRouteReason: FC<ICheckInconvenientRouteReasonProps> = ({
   value, onChange
 }) => {
-  const [inconvenientRouteReasons, setInconvenientRouteReasons] = useState<InconvenientRouteReasons[]>([]);
+  const [inconvenientRouteReasons, setInconvenientRouteReasons] = useState<InconvenientRouteReasons[]>(value || []);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
