@@ -1,6 +1,7 @@
 import React, {
   FC,
   useState,
+  useEffect,
 } from 'react';
 import {
   Select,
@@ -21,18 +22,22 @@ export const SelectInconvenientRouteReason: FC<ISelectProblemTypeProps> = ({
   const [selected, setSelected] = useState<InconvenientRouteReasons | undefined>(value);
 
   const handleChange = (event: SelectChangeEvent<InconvenientRouteReasons>) => {
-    setSelected(event.target.value as InconvenientRouteReasons); // TODO: Избавиться от as
+    setSelected(event.target.value as InconvenientRouteReasons);
     onChange?.(event.target.value as InconvenientRouteReasons);
   };
+
+  useEffect(() => {
+    setSelected(value);
+  }, [value])
 
   return (
     <FormControl fullWidth>
       <InputLabel id="select-inconvenient-route-label">Причина</InputLabel>
       <Select
         labelId="select-inconvenient-route-label"
-        label="Appliances"
+        label="Причина"
         id="select-inconvenient-route"
-        value={selected}
+        value={selected || ''}
         onChange={handleChange}
       >
         <MenuItem value={InconvenientRouteReasons.BUS_STOP_FAR_FROM_A}>Остановка далеко от точки А</MenuItem>

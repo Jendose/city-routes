@@ -1,6 +1,6 @@
 import { TransportTypes } from 'components/ReportForm/types/enums/TransportTypes';
 
-export interface CityRoute {
+export interface ICityRoute {
   transportType: TransportTypes;
   routeName: string;
 }

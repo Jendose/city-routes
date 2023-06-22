@@ -1,6 +1,7 @@
 import React, {
   FC,
   useState,
+  useEffect,
 } from 'react';
 import {
   Select,
@@ -22,18 +23,22 @@ export const SelectTransportType: FC<ISelectProblemTypeProps> = ({
   const [selected, setSelected] = useState<TransportTypes | undefined>(value);
 
   const handleChange = (event: SelectChangeEvent<TransportTypes>) => {
-    setSelected(event.target.value as TransportTypes); // TODO: Избавиться от as
+    setSelected(event.target.value as TransportTypes);
     onChange?.(event.target.value as TransportTypes);
   };
+
+  useEffect(() => {
+    setSelected(value);
+  }, [value])
 
   return (
     <FormControl fullWidth>
       <InputLabel id="select-problem-type-label">Тип транспорта</InputLabel>
       <Select
         labelId="select-problem-type-label"
-        label="Appliances"
+        label="Тип транспорта"
         id="select-problem-type"
-        value={selected}
+        value={selected || ''}
         onChange={handleChange}
       >
         <MenuItem value={TransportTypes.BUS}>Автобус</MenuItem>

@@ -2,22 +2,18 @@ import React, {
   FC,
   useState,
 } from 'react';
-import { IReportDto } from 'components/ReportForm/types/reportDtos/IReportDto';
 import { ProblemTypes } from 'components/ReportForm/types/enums/ProblemTypes';
 import { InconvenientRouteReasons } from 'components/ReportForm/types/enums/InconvenientRouteReasons';
 import { SelectProblemType } from 'components/ReportForm/components/select/SelectProblemType/SelectProblemType';
-import { SelectInconvenientRouteReason } from 'components/ReportForm/components/select/SelectInconvenientRouteReason/SelectInconvenientRouteReason';
-import { IInconvenientRouteReportDto } from 'components/ReportForm/types/reportDtos/IInconvenientRouteReportDto';
-import { ILongWaitingReportDto } from 'components/ReportForm/types/reportDtos/ILongWaitingReportDto';
-import { IBusStopQueueReportDto } from 'components/ReportForm/types/reportDtos/IBusStopQueueReportDto';
-import { ICrowdedBusReportDto } from 'components/ReportForm/types/reportDtos/ICrowdedBusReportDto';
-import { ITrafficJamReportDto } from 'components/ReportForm/types/reportDtos/ITrafficJamReportDto';
 import {
   TextField,
   Box,
 } from '@mui/material';
 import { SelectTransportType } from 'components/ReportForm/components/select/SelectTransportType/SelectTransportType';
 import { TransportTypes } from 'components/ReportForm/types/enums/TransportTypes';
+import { AutocompleteRoute } from 'components/ReportForm/components/autocomplete/AutocompleteRoute/AutocompleteRoute';
+import { IReportDto } from 'components/ReportForm/types/IReportDto';
+import { CheckInconvenientRouteReason } from 'components/ReportForm/components/checkbox/CheckInconvenientRouteReason';
 
 
 export interface IReportFormProps {
@@ -29,29 +25,29 @@ export const ReportForm: FC<IReportFormProps> = ({
 }) => {
   const [selectedProblemType, setSelectedProblemType] = useState<ProblemTypes | undefined>();
   const [selectedTransportType, setSelectedTransportType] = useState<TransportTypes | undefined>();
-  const [selectedInconvenientRouteReason, setSelectedInconvenientRouteReason] = useState<InconvenientRouteReasons | undefined>();
+  const [selectedInconvenientRouteReasons, setSelectedInconvenientRouteReasons] = useState<InconvenientRouteReasons[]>([]);
 
-  const [inconvenientRouteReportState, setInconvenientRouteReportState] = useState<IInconvenientRouteReportDto>();
-  const [longWaitingReportState, setLongWaitingReportState] = useState<ILongWaitingReportDto>();
-  const [busStopQueueReportState, setBusStopQueueReportState] = useState<IBusStopQueueReportDto>();
-  const [crowdedBusReportState, setCrowdedBusReportState] = useState<ICrowdedBusReportDto>();
-  const [trafficJamReportState, setTrafficJamReportState] = useState<ITrafficJamReportDto>();
+  const [routeReportState, setRouteReportState] = useState<IReportDto | undefined>();
 
   const handleProblemTypeChange = (value: ProblemTypes) => {
     setSelectedProblemType(value);
+    setSelectedTransportType(undefined);
+    setSelectedInconvenientRouteReasons([]);
   };
 
   const handleTransportTypeChange = (value: TransportTypes) => {
     setSelectedTransportType(value);
   };
 
-  const handleInconvenientRouteReasonChange = (value: InconvenientRouteReasons) => {
-    setSelectedInconvenientRouteReason(value);
+  const handleInconvenientRouteReasonChange = (value: InconvenientRouteReasons[]) => {
+    setSelectedInconvenientRouteReasons(value);
+    // TODO: Добавить везде заполнения полей в routeReportState
+    //  (мы сможем хранить этот объект локально на фронте, тогда на защите можно будет создать любую жалобу и открыть её в списке)
   };
 
   return (
     <Box sx={{
-      width: '350px',
+      width: '370px',
       display: 'flex',
       flexDirection: 'column',
       gap: '20px',
@@ -61,51 +57,63 @@ export const ReportForm: FC<IReportFormProps> = ({
         onChange={handleProblemTypeChange}
       />
 
-      <SelectTransportType
-        value={selectedTransportType}
-        onChange={handleTransportTypeChange}
-      />
+      {selectedProblemType && (
+        <>
+          {selectedProblemType !== ProblemTypes.OTHER && (
+            <>
+              {selectedProblemType === ProblemTypes.INCONVENIENT_ROUTE && (
+                <CheckInconvenientRouteReason
+                  value={selectedInconvenientRouteReasons}
+                  onChange={handleInconvenientRouteReasonChange}
+                />
+              )}
 
-      {selectedProblemType === ProblemTypes.INCONVENIENT_ROUTE && (
-        <SelectInconvenientRouteReason
-          value={selectedInconvenientRouteReason}
-          onChange={handleInconvenientRouteReasonChange}
-        />
+              {selectedProblemType !== ProblemTypes.INCONVENIENT_ROUTE && (
+                <>
+                  <SelectTransportType
+                    value={selectedTransportType}
+                    onChange={handleTransportTypeChange}
+                  />
+
+                  {selectedTransportType && (
+                    <AutocompleteRoute
+                      transportType={selectedTransportType}
+
+                    />
+                  )}
+                </>
+              )}
+
+              {selectedProblemType === ProblemTypes.LONG_WAITING && (
+                <TextField
+                  id="minutes-of-waiting"
+                  label="Примерное время ожидания (мин)"
+                  variant="outlined"
+                  fullWidth
+                  // TODO: Добавить onChange везде
+                />
+              )}
+
+              {selectedProblemType === ProblemTypes.BUS_STOP_QUEUE && (
+                <TextField
+                  id="amount-of-people"
+                  label="Примерное количество людей"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            </>
+          )}
+
+          <TextField
+            id="description"
+            label="Описание"
+            variant="outlined"
+            fullWidth
+            multiline
+          />
+        </>
       )}
-
-      <TextField
-        id="route"
-        label="Номер маршрута"
-        variant="outlined"
-        fullWidth
-        // TODO: добавить onChange везде
-      />
-
-      {selectedProblemType === ProblemTypes.LONG_WAITING && (
-        <TextField
-          id="minutes-of-waiting"
-          label="Примерное время ожидания (мин)"
-          variant="outlined"
-          fullWidth
-        />
-      )}
-
-      {selectedProblemType === ProblemTypes.BUS_STOP_QUEUE && (
-        <TextField
-          id="amount-of-people"
-          label="Примерное количество людей"
-          variant="outlined"
-          fullWidth
-        />
-      )}
-
-      <TextField
-        id="description"
-        label="Описание"
-        variant="outlined"
-        fullWidth
-        multiline
-      />
     </Box>
   );
 };

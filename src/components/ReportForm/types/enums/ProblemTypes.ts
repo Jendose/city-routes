@@ -4,4 +4,5 @@ export enum ProblemTypes {
   BUS_STOP_QUEUE = 'BUS_STOP_QUEUE',
   CROWDED_BUS = 'CROWDED_BUS',
   TRAFFIC_JAM = 'TRAFFIC_JAM',
+  OTHER = 'OTHER',
 }
