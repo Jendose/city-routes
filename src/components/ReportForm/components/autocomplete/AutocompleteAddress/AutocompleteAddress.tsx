@@ -24,10 +24,17 @@ interface IAddressInputProps {
 export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChange, label }) => {
   const [address, setAddress] = useState<string | null>('');
   const [isPending, setPending] = useState<boolean>(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(event.target.value);
-    onChange?.(event.target.value);
+    const value = event.target.value;
+    if (value.length === 0) {
+      if (open) setOpen(false);
+    } else {
+      if (!open) setOpen(true);
+    }
+    setAddress(value);
+    onChange?.(value);
   };
 
   const handleLocateClick = () => {
@@ -47,14 +54,18 @@ export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChan
         freeSolo
         options={SaratovAddresses}
         value={address}
-        onChange={(event, value) => setAddress(value)}
+        onChange={(event, value) => {
+          setAddress(value);
+        }}
+        open={open}
+        onClose={() => setOpen(false)}
         renderInput={(params) => (
           <TextField
             {...params}
             label={label || 'Адрес'}
             variant="outlined"
             fullWidth
-            onChange={handleAddressChange}
+            onInput={handleAddressChange}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
