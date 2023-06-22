@@ -4,6 +4,8 @@ import { InconvenientRouteReasons } from 'components/ReportForm/types/enums/Inco
 
 export interface IReportDto {
   problemType?: ProblemTypes;
+  address?: string;
+  address2?: string;
   description?: string;
   route?: ICityRoute;
   inconvenientRouteReasons?: InconvenientRouteReasons[];

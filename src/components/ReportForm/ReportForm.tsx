@@ -16,7 +16,8 @@ import { TransportTypes } from 'components/ReportForm/types/enums/TransportTypes
 import { AutocompleteRoute } from 'components/ReportForm/components/autocomplete/AutocompleteRoute/AutocompleteRoute';
 import { IReportDto } from 'components/ReportForm/types/IReportDto';
 import { CheckInconvenientRouteReason } from 'components/ReportForm/components/checkbox/CheckInconvenientRouteReason';
-import { setDeep } from 'components/ReportForm/utils/setDeep';
+import { setDeep } from 'utils/setDeep';
+import { AutocompleteAddress } from 'components/ReportForm/components/autocomplete/AutocompleteAddress/AutocompleteAddress';
 
 
 export interface IReportFormProps {
@@ -96,13 +97,35 @@ export const ReportForm: FC<IReportFormProps> = ({
 
       {selectedProblemType && (
         <>
+          {selectedProblemType !== ProblemTypes.INCONVENIENT_ROUTE && (
+            <AutocompleteAddress
+              key={key+1}
+              value={routeReport?.address}
+              onChange={(val) => setField('address', val)}
+            />
+          )}
+
           {selectedProblemType !== ProblemTypes.OTHER && (
             <>
               {selectedProblemType === ProblemTypes.INCONVENIENT_ROUTE && (
-                <CheckInconvenientRouteReason
-                  value={routeReport?.inconvenientRouteReasons}
-                  onChange={(val) => setField('inconvenientRouteReasons', val)}
-                />
+                <>
+                  <AutocompleteAddress
+                    label="Адрес точки А"
+                    key={key+2}
+                    value={routeReport?.address}
+                    onChange={(val) => setField('address', val)}
+                  />
+                  <AutocompleteAddress
+                    label="Адрес точки Б"
+                    key={key+3}
+                    value={routeReport?.address2}
+                    onChange={(val) => setField('address2', val)}
+                  />
+                  <CheckInconvenientRouteReason
+                    value={routeReport?.inconvenientRouteReasons}
+                    onChange={(val) => setField('inconvenientRouteReasons', val)}
+                  />
+                </>
               )}
 
               {selectedProblemType !== ProblemTypes.INCONVENIENT_ROUTE && (
@@ -115,7 +138,7 @@ export const ReportForm: FC<IReportFormProps> = ({
                   {selectedTransportType && (
                     <AutocompleteRoute
                       transportType={selectedTransportType}
-                      // value={routeReport?.route?.routeName}
+                      value={routeReport?.route?.routeName}
                       onChange={(val) => setField('route.routeName', val)}
                     />
                   )}
@@ -124,7 +147,7 @@ export const ReportForm: FC<IReportFormProps> = ({
 
               {selectedProblemType === ProblemTypes.LONG_WAITING && (
                 <TextField
-                  key={key}
+                  key={key+4}
                   id="minutes-of-waiting"
                   label="Примерное время ожидания (мин)"
                   variant="outlined"
@@ -136,7 +159,7 @@ export const ReportForm: FC<IReportFormProps> = ({
 
               {selectedProblemType === ProblemTypes.BUS_STOP_QUEUE && (
                 <TextField
-                  key={key}
+                  key={key+5}
                   id="amount-of-people"
                   label="Примерное количество людей"
                   variant="outlined"
@@ -149,7 +172,7 @@ export const ReportForm: FC<IReportFormProps> = ({
           )}
 
           <TextField
-            key={key}
+            key={key+6}
             id="description"
             label="Описание"
             variant="outlined"
