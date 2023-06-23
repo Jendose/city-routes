@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import { ReportForm } from 'components/ReportForm/ReportForm';
+import { Demo } from 'pages/demo/demo';
 
 function App() {
   return (
     <div className="App">
       <div className="wrapper">
-        <ReportForm />
+        <Demo />
       </div>
     </div>
   );
