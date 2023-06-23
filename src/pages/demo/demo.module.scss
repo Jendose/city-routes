@@ -1,0 +1,79 @@
+.wrapper {
+  position: relative;
+  width: 480px;
+  .image {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+    width: 100%;
+  }
+  .contentMobile {
+    background: #fcfcf7;
+    overflow-y: overlay;
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    margin: 23px 25px 22px 26px;
+    border-radius: 35px;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+    }
+    &::-webkit-scrollbar-track-piece:start {
+      background: transparent;
+      margin-top: 33px;
+    }
+    &::-webkit-scrollbar-track-piece:end {
+      background: transparent;
+      margin-bottom: 33px;
+    }
+
+    .form {
+      margin-top: 100px;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .message {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .text {
+        margin: 10px;
+        text-align: center;
+        font-size: 22px;
+      }
+    }
+    .scroll {
+      height: 3000px;
+      background: linear-gradient(#e66465, #9198e5);
+    }
+    .container {
+      width: 100%;
+      overflow-x: auto;
+      &::-webkit-scrollbar {
+        height: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+      }
+      .horScroll {
+        height: 150px;
+        width: 2000px;
+        background: linear-gradient(135deg, orange 60%, cyan);
+      }
+    }
+  }
+}
