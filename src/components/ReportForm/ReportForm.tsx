@@ -11,7 +11,6 @@ import {
   Button,
   Typography,
   Snackbar,
-  Alert,
   SnackbarContent,
 } from '@mui/material';
 import { SelectTransportType } from 'components/ReportForm/components/select/SelectTransportType/SelectTransportType';
@@ -75,6 +74,10 @@ export const ReportForm: FC<IReportFormProps> = ({
     setTimeout(() => {
       console.log('Форма отправлена', routeReport);
       setOpenSuccessToast(true);
+      setTimeout(() => {
+        setSelectedProblemType(undefined);
+        clearFields();
+      }, 100)
     }, 1600);
   };
 
@@ -197,24 +200,24 @@ export const ReportForm: FC<IReportFormProps> = ({
           >
             Отправить
           </Button>
-
-          <Snackbar
-            open={openSuccessToast}
-            autoHideDuration={6000}
-            onClose={() => setOpenSuccessToast(false)}
-            sx={{
-              height: '200px',
-              "& .MuiSnackbarContent-root": { backgroundColor: "green" }
-            }}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          >
-            <SnackbarContent
-              message={'Успешно отправлено'}
-              sx={{ display: 'flex', justifyContent: 'center' }}
-            />
-          </Snackbar>
         </>
       )}
+
+      <Snackbar
+        open={openSuccessToast}
+        autoHideDuration={6000}
+        onClose={() => setOpenSuccessToast(false)}
+        sx={{
+          height: '200px',
+          "& .MuiSnackbarContent-root": { backgroundColor: "green" }
+        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <SnackbarContent
+          message={'Успешно отправлено'}
+          sx={{ display: 'flex', justifyContent: 'center' }}
+        />
+      </Snackbar>
     </Box>
   );
 };
