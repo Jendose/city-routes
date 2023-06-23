@@ -12,6 +12,7 @@ import {
   Typography,
   Snackbar,
   Alert,
+  SnackbarContent,
 } from '@mui/material';
 import { SelectTransportType } from 'components/ReportForm/components/select/SelectTransportType/SelectTransportType';
 import { TransportTypes } from 'components/ReportForm/types/enums/TransportTypes';
@@ -74,7 +75,7 @@ export const ReportForm: FC<IReportFormProps> = ({
     setTimeout(() => {
       console.log('Форма отправлена', routeReport);
       setOpenSuccessToast(true);
-    }, 1200);
+    }, 1600);
   };
 
   return (
@@ -201,9 +202,16 @@ export const ReportForm: FC<IReportFormProps> = ({
             open={openSuccessToast}
             autoHideDuration={6000}
             onClose={() => setOpenSuccessToast(false)}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            sx={{
+              height: '200px',
+              "& .MuiSnackbarContent-root": { backgroundColor: "green" }
+            }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           >
-            <Alert severity="success">Успешно отправлено</Alert>
+            <SnackbarContent
+              message={'Успешно отправлено'}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            />
           </Snackbar>
         </>
       )}
