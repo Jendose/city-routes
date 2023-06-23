@@ -163,7 +163,7 @@ export const ReportForm: FC<IReportFormProps> = ({
                 />
               )}
 
-              {selectedProblemType === ProblemTypes.BUS_STOP_QUEUE && (
+              {(selectedProblemType === ProblemTypes.BUS_STOP_QUEUE || selectedProblemType === ProblemTypes.CROWDED_BUS) && (
                 <TextField
                   key={key+5}
                   id="amount-of-people"
