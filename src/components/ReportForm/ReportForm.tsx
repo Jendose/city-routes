@@ -10,6 +10,8 @@ import {
   Box,
   Button,
   Typography,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { SelectTransportType } from 'components/ReportForm/components/select/SelectTransportType/SelectTransportType';
 import { TransportTypes } from 'components/ReportForm/types/enums/TransportTypes';
@@ -33,6 +35,7 @@ export const ReportForm: FC<IReportFormProps> = ({
   const [routeReport, setRouteReport] = useState<IReportDto | undefined>({});
 
   const [key, setKey] = useState<number>(0);
+  const [openSuccessToast, setOpenSuccessToast] = useState<boolean>();
 
   const setField = (field: string, value: any) => {
     setDeep(setRouteReport, field, value);
@@ -68,7 +71,10 @@ export const ReportForm: FC<IReportFormProps> = ({
 
   const handleSubmit = () => {
     // localStorage.setItem('routeReport', JSON.stringify(routeReport));
-    console.log('Форма отправлена', routeReport);
+    setTimeout(() => {
+      console.log('Форма отправлена', routeReport);
+      setOpenSuccessToast(true);
+    }, 1200);
   };
 
   return (
@@ -182,8 +188,6 @@ export const ReportForm: FC<IReportFormProps> = ({
             onInput={(event) => setField('description', (event.target as HTMLInputElement).value)}
           />
 
-          {/* TODO: Здесь нужна кнопка submit на основе Button из mui. И надо сделать, чтобы она была не активна в случае, если не все поля заполнены. В случае неактивности, при наведении на кнопку должен появляться tooltip в надписью "Заполните все обязательные поля", а под каждым блоком с инпутом в форме должна появляться надпись красным "Обязательное поле" */}
-
           <Button
             variant="contained"
             color="primary"
@@ -193,6 +197,14 @@ export const ReportForm: FC<IReportFormProps> = ({
             Отправить
           </Button>
 
+          <Snackbar
+            open={openSuccessToast}
+            autoHideDuration={6000}
+            onClose={() => setOpenSuccessToast(false)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          >
+            <Alert severity="success">Успешно отправлено</Alert>
+          </Snackbar>
         </>
       )}
     </Box>
