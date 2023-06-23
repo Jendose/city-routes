@@ -44,7 +44,7 @@ export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChan
     setTimeout(() => {
       setAddress(exampleAddress);
       setPending(false);
-    }, 3000);
+    }, 2000);
   };
 
   return (
