@@ -1,7 +1,6 @@
 import React, {
   FC,
   useState,
-  useEffect,
 } from 'react';
 import {
   Autocomplete,
@@ -12,21 +11,22 @@ import {
 } from '@mui/material';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { SaratovAddresses } from 'components/ReportForm/types/stubs/addresses';
+import { IMarker } from 'components/ReportForm/types/IMarker';
 
 
 interface IAddressInputProps {
   key?: number;
-  value?: string;
-  onChange?: (state?: string) => void;
+  value?: IMarker;
+  onChange?: (state?: IMarker) => void;
   label?: string;
 }
 
 export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChange, label }) => {
-  const [address, setAddress] = useState<string | null>('');
+  const [address, setAddress] = useState<IMarker | null>(null);
   const [isPending, setPending] = useState<boolean>(false);
   const [open, setOpen] = React.useState(false);
 
-  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddressChange = (event: any) => {
     const value = event.target.value;
     if (value.length === 0) {
       if (open) setOpen(false);
@@ -38,8 +38,8 @@ export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChan
   };
 
   const handleLocateClick = () => {
-    const exampleAddress = 'г. Саратов, проспект Энтузиастов, 48';
-    setAddress('');
+    const exampleAddress = { title: 'г. Саратов, проспект Энтузиастов, 48', position: { lat: 51.497798, lng: 45.934364 } };
+    setAddress(null);
     setPending(true);
     setTimeout(() => {
       setAddress(exampleAddress);
@@ -55,10 +55,13 @@ export const AutocompleteAddress: FC<IAddressInputProps> = ({ key, value, onChan
         options={SaratovAddresses}
         value={address}
         onChange={(event, value) => {
+          // TODO: Не работает ничерта
+          // @ts-ignore
           setAddress(value);
         }}
         open={open}
         onClose={() => setOpen(false)}
+        renderOption={(value) => value.title}
         renderInput={(params) => (
           <TextField
             {...params}
