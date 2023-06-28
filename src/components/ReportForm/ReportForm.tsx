@@ -1,7 +1,6 @@
 import React, {
   FC,
   useState,
-  useEffect,
 } from 'react';
 import { ProblemTypes } from 'components/ReportForm/types/enums/ProblemTypes';
 import { SelectProblemType } from 'components/ReportForm/components/select/SelectProblemType/SelectProblemType';
@@ -21,14 +20,9 @@ import { CheckInconvenientRouteReason } from 'components/ReportForm/components/c
 import { setDeep } from 'utils/setDeep';
 import { AutocompleteAddress } from 'components/ReportForm/components/autocomplete/AutocompleteAddress/AutocompleteAddress';
 
+export const ReportForm: FC = () => {
+  const dispatch = useDispatch();
 
-export interface IReportFormProps {
-
-}
-
-export const ReportForm: FC<IReportFormProps> = ({
-
-}) => {
   const [selectedProblemType, setSelectedProblemType] = useState<ProblemTypes | undefined>();
   const [selectedTransportType, setSelectedTransportType] = useState<TransportTypes | undefined>();
 
@@ -47,10 +41,6 @@ export const ReportForm: FC<IReportFormProps> = ({
     setKey((prevKey) => prevKey + 1);
   }
 
-  useEffect(() => {
-    console.log(report);
-  }, [report])
-
   const handleProblemTypeChange = (value: ProblemTypes) => {
     setField('problemType', value);
     setSelectedProblemType(value);
@@ -63,15 +53,11 @@ export const ReportForm: FC<IReportFormProps> = ({
   };
 
   const handleSubmit = () => {
-    // localStorage.setItem('report', JSON.stringify(report));
-    setTimeout(() => {
-      console.log('Форма отправлена', report);
-      setOpenSuccessToast(true);
-      setTimeout(() => {
-        setSelectedProblemType(undefined);
-        clearFields();
-      }, 100)
-    }, 1600);
+    dispatch(saveReport(report));
+    setOpenSuccessToast(true);
+    setSelectedProblemType(undefined);
+    clearFields();
+    dispatch(clearReportData());
   };
 
   return (
