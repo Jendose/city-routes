@@ -32,24 +32,24 @@ export const ReportForm: FC<IReportFormProps> = ({
   const [selectedProblemType, setSelectedProblemType] = useState<ProblemTypes | undefined>();
   const [selectedTransportType, setSelectedTransportType] = useState<TransportTypes | undefined>();
 
-  const [routeReport, setRouteReport] = useState<IReportDto | undefined>({});
+  const [report, setReport] = useState<IReportDto | undefined>({});
 
   const [key, setKey] = useState<number>(0);
   const [openSuccessToast, setOpenSuccessToast] = useState<boolean>();
 
   const setField = (field: string, value: any) => {
-    setDeep(setRouteReport, field, value);
+    setDeep(setReport, field, value);
   };
 
   const clearFields = () => {
-    setRouteReport({ problemType: routeReport?.problemType });
+    setReport({ problemType: report?.problemType });
     setSelectedTransportType(undefined);
     setKey((prevKey) => prevKey + 1);
   }
 
   useEffect(() => {
-    console.log(routeReport);
-  }, [routeReport])
+    console.log(report);
+  }, [report])
 
   const handleProblemTypeChange = (value: ProblemTypes) => {
     setField('problemType', value);
@@ -62,17 +62,10 @@ export const ReportForm: FC<IReportFormProps> = ({
     setSelectedTransportType(value);
   };
 
-  // useEffect(() => {
-  //   const storedReport = localStorage.getItem('routeReport');
-  //   if (storedReport) {
-  //     setRouteReport(JSON.parse(storedReport));
-  //   }
-  // }, []);
-
   const handleSubmit = () => {
-    // localStorage.setItem('routeReport', JSON.stringify(routeReport));
+    // localStorage.setItem('report', JSON.stringify(report));
     setTimeout(() => {
-      console.log('Форма отправлена', routeReport);
+      console.log('Форма отправлена', report);
       setOpenSuccessToast(true);
       setTimeout(() => {
         setSelectedProblemType(undefined);
@@ -110,7 +103,7 @@ export const ReportForm: FC<IReportFormProps> = ({
           {selectedProblemType !== ProblemTypes.INCONVENIENT_ROUTE && (
             <AutocompleteAddress
               key={key+1}
-              value={routeReport?.address}
+              value={report?.address}
               onChange={(val) => setField('address', val)}
             />
           )}
@@ -122,17 +115,17 @@ export const ReportForm: FC<IReportFormProps> = ({
                   <AutocompleteAddress
                     label="Адрес точки А"
                     key={key+2}
-                    value={routeReport?.address}
+                    value={report?.address}
                     onChange={(val) => setField('address', val)}
                   />
                   <AutocompleteAddress
                     label="Адрес точки Б"
                     key={key+3}
-                    value={routeReport?.address2}
+                    value={report?.address2}
                     onChange={(val) => setField('address2', val)}
                   />
                   <CheckInconvenientRouteReason
-                    value={routeReport?.inconvenientRouteReasons}
+                    value={report?.inconvenientRouteReasons}
                     onChange={(val) => setField('inconvenientRouteReasons', val)}
                   />
                 </>
@@ -148,7 +141,7 @@ export const ReportForm: FC<IReportFormProps> = ({
                   {selectedTransportType && (
                     <AutocompleteRoute
                       transportType={selectedTransportType}
-                      value={routeReport?.route?.routeName}
+                      value={report?.route?.routeName}
                       onChange={(val) => setField('route.routeName', val)}
                     />
                   )}
@@ -162,7 +155,7 @@ export const ReportForm: FC<IReportFormProps> = ({
                   label="Примерное время ожидания (мин)"
                   variant="outlined"
                   fullWidth
-                  value={routeReport?.minutesOfWaiting}
+                  value={report?.minutesOfWaiting}
                   onInput={(event) => setField('minutesOfWaiting', (event.target as HTMLInputElement).value)}
                 />
               )}
@@ -174,7 +167,7 @@ export const ReportForm: FC<IReportFormProps> = ({
                   label="Примерное количество людей"
                   variant="outlined"
                   fullWidth
-                  value={routeReport?.amountOfPeople}
+                  value={report?.amountOfPeople}
                   onInput={(event) => setField('amountOfPeople', (event.target as HTMLInputElement).value)}
                 />
               )}
@@ -188,7 +181,7 @@ export const ReportForm: FC<IReportFormProps> = ({
             variant="outlined"
             fullWidth
             multiline
-            value={routeReport?.description}
+            value={report?.description}
             onInput={(event) => setField('description', (event.target as HTMLInputElement).value)}
           />
 
